@@ -1,7 +1,9 @@
-
+https://github.com/okovtun/P_21_NP.git
 https://www.youtube.com/playlist?list=PLeqyOOqxeiIMKWU2pQnigJjjA30euFu55
 
 TODO:
+0. Изучить побитовые операции: NOT, OR, AND, XOR (Не путать с такими же логическими операциями)
+	https://legacy.cplusplus.com/doc/tutorial/operators/#:~:text=contain%20value%203.-,Bitwise%20operators,-(%20%26%2C%20%7C%2C%20%5E%2C%20~%2C%20%3C%3C%2C%20%3E%3E%20)
 1. При вводе IP-адреса, маска и префикс должны заполняться автоматически, в зависимости от того,
    какого класса адрес был введен;
 2. При изменении маски должен меняться префикс;
