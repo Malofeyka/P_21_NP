@@ -34,6 +34,9 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		HWND hUpDown = GetDlgItem(hwnd, IDC_SPIN_PREFIX);
 		//Функция GetDlgItem() получает HWND элемента интерфейса по его ID
 		SendMessage(hUpDown, UDM_SETRANGE32, 0, 32);
+
+		HWND hIPaddress = GetDlgItem(hwnd, IDC_IPADDRESS);
+		SetFocus(hIPaddress);
 	}
 	break;
 	case WM_COMMAND:
@@ -47,6 +50,7 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 			HWND hIPaddress = GetDlgItem(hwnd, IDC_IPADDRESS);
 			HWND hStaticInfo = GetDlgItem(hwnd, IDC_STATIC_INFO);
+			HWND hEditPrefix = GetDlgItem(hwnd, IDC_EDIT_PREFIX);
 			//EN_ - Edit notification (Уведомление)
 			if (HIWORD(wParam) == EN_CHANGE)
 			{
@@ -65,9 +69,22 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 				sprintf_s(sz_info, SIZE, "Info:\nFirst: %i, Second: %i, Third: %i, Forth: %i", first, second, third, fourth);
 				SendMessage(hStaticInfo, WM_SETTEXT, 0, (LPARAM)sz_info);
+
+				////////////////////////////////////////////////////////////////////////////////
+
+				if (first < 128)SendMessage(hEditPrefix, WM_SETTEXT, 0, (LPARAM)"8");
+				else if (first < 192)SendMessage(hEditPrefix, WM_SETTEXT, 0, (LPARAM)"16");
+				else if (first < 224)SendMessage(hEditPrefix, WM_SETTEXT, 0, (LPARAM)"24");
 			}
 		}
 		break;
+		case IDC_EDIT_PREFIX:
+		{
+			HWND hEditPrefix = GetDlgItem(hwnd, IDC_EDIT_PREFIX);
+			HWND hIPmask = GetDlgItem(hwnd, IDC_IPMASK);
+			DWORD dw_mask = 1;
+		}
+			break;
 		case IDOK: MessageBox(hwnd, "Была нажата кнопка OK", "Info", MB_OK | MB_ICONINFORMATION); break;
 			//	MB_OK | MB_ICONINFORMATION - MB_OK or MB_ICONINFORMATION
 			// || - логическое 'OR'
