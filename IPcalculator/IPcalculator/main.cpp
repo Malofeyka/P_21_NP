@@ -12,6 +12,30 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, IN
 	return 0;
 }
 
+BOOL CheckMask(DWORD mask)
+{
+	//DWORD pattern = 1 << 32;
+	for (int i = 0; i < 32; i++)
+	{
+
+	}
+	return TRUE;
+}
+INT CountOnes(DWORD mask)
+{
+	DWORD power;
+	for (int i = 1; i; i <<= 1)
+	{
+		if (mask & i)
+		{
+			power = i;
+			break;
+		}
+	}
+
+	return power;
+}
+
 //Процедура окна - это самая обычная функция, которая вызывается при запуске окна.
 BOOL CALLBACK DlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
@@ -82,9 +106,23 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		{
 			HWND hEditPrefix = GetDlgItem(hwnd, IDC_EDIT_PREFIX);
 			HWND hIPmask = GetDlgItem(hwnd, IDC_IPMASK);
-			DWORD dw_mask = 1;
+			//DWORD dw_mask = UINT_MAX;
+			DWORD dw_mask = ~0;
+			if (HIWORD(wParam) == EN_CHANGE)
+			{
+				CONST INT SIZE = 8;
+				CHAR sz_buffer[SIZE];
+				SendMessage(hEditPrefix, WM_GETTEXT, SIZE, (LPARAM)sz_buffer);
+				//MessageBox(hwnd, sz_buffer, "Prefix", MB_OK | MB_ICONINFORMATION);
+				INT shift = atoi(sz_buffer);
+				//	  2 + 3;
+				//dw_mask >>= (32 - shift);	//Функция atoi() преобразует ASCII-строку в значение типа 'int'
+				//dw_mask <<= (32 - shift);
+				//SendMessage(hIPmask, IPM_SETADDRESS, 0, dw_mask);
+				SendMessage(hIPmask, IPM_SETADDRESS, 0, dw_mask >> (32 - shift) << (32 - shift));
+			}
 		}
-			break;
+		break;
 		case IDOK: MessageBox(hwnd, "Была нажата кнопка OK", "Info", MB_OK | MB_ICONINFORMATION); break;
 			//	MB_OK | MB_ICONINFORMATION - MB_OK or MB_ICONINFORMATION
 			// || - логическое 'OR'
