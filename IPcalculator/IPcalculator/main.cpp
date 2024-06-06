@@ -23,8 +23,9 @@ BOOL CheckMask(DWORD mask)
 }
 INT CountOnes(DWORD mask)
 {
+	INT zero_bits = 0;
 	DWORD power;
-	for (int i = 1; i; i <<= 1)
+	for (int i = 1; i; i <<= 1, zero_bits++)
 	{
 		if (mask & i)
 		{
@@ -32,8 +33,7 @@ INT CountOnes(DWORD mask)
 			break;
 		}
 	}
-
-	return power;
+	return 32 - zero_bits;
 }
 
 //Процедура окна - это самая обычная функция, которая вызывается при запуске окна.
@@ -102,6 +102,22 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			}
 		}
 		break;
+		case IDC_IPMASK:
+		{
+			//if (HIWORD(wParam) == EN_CHANGE)
+			//{
+			//	HWND hIPmask = GetDlgItem(hwnd, IDC_IPMASK);
+			//	HWND hEditPrefix = GetDlgItem(hwnd, IDC_EDIT_PREFIX);
+			//	DWORD dw_mask = 0;
+			//	SendMessage(hIPmask, IPM_GETADDRESS, 0, (LPARAM)&dw_mask);
+			//	INT prefix = CountOnes(dw_mask);
+			//	CHAR sz_prefix[3] = {};	//sz_ - string zero (строка, заканчивающаяся нулем)
+			//	sprintf(sz_prefix, "%i", prefix);
+			//	SendMessage(hEditPrefix, WM_SETTEXT, 0, (LPARAM)sz_prefix);
+			//	//SendMessage(hIPmask, IPM_SETADDRESS, 0, dw_mask >> (32 - prefix) << (32 - prefix));
+			//}
+		}
+		break;
 		case IDC_EDIT_PREFIX:
 		{
 			HWND hEditPrefix = GetDlgItem(hwnd, IDC_EDIT_PREFIX);
@@ -130,9 +146,30 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		case IDCANCEL: EndDialog(hwnd, 0); break;
 		}
 		break;
+	case WM_NOTIFY:
+	{
+		HWND hIPmask = GetDlgItem(hwnd, IDC_IPMASK);
+		HWND hEditPrefix = GetDlgItem(hwnd, IDC_EDIT_PREFIX);
+		switch (wParam)
+		{
+				case IDC_IPMASK:
+				{
+					DWORD dw_mask = 0;
+					SendMessage(hIPmask, IPM_GETADDRESS, 0, (LPARAM)&dw_mask);
+					int i = 32;
+					for (; dw_mask & 1 ^ 1; i--)dw_mask >>= 1;
+					CHAR sz_prefix[5]{};
+					sprintf(sz_prefix, "%i", i);
+					SendMessage(hEditPrefix, WM_SETTEXT, 0, (LPARAM)sz_prefix);
+				}
+				break;
+		}
+		break;
+	}
+	break;
 	case WM_CLOSE:
 		EndDialog(hwnd, 0);
 		break;
-	}
-	return FALSE;
+}
+return FALSE;
 }

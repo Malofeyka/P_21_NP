@@ -1,10 +1,20 @@
 https://github.com/okovtun/P_21_NP.git
 https://www.youtube.com/playlist?list=PLeqyOOqxeiIMKWU2pQnigJjjA30euFu55
 
-TODO:
-1. Проверить корректность ввода маски;
+TOREAD:
+https://ru.wikipedia.org/wiki/%D0%92%D0%B5%D0%BD%D0%B3%D0%B5%D1%80%D1%81%D0%BA%D0%B0%D1%8F_%D0%BD%D0%BE%D1%82%D0%B0%D1%86%D0%B8%D1%8F
 
 TODO:
+1. По введенным IP-адресу и Маске, нужно вывести следующую информацию о сети:
+   - Адрес сети;
+   - Широковещательный адрес;
+   - Количество IP-адресов;
+   - Диапазон IP-адресов, которые можно назначить узлам;
+
+DONE:
+1. Проверить корректность ввода маски;
+
+DONE:
 0. Изучить побитовые операции: NOT, OR, AND, XOR (Не путать с такими же логическими операциями)
 	https://legacy.cplusplus.com/doc/tutorial/operators/#:~:text=contain%20value%203.-,Bitwise%20operators,-(%20%26%2C%20%7C%2C%20%5E%2C%20~%2C%20%3C%3C%2C%20%3E%3E%20)
 1. При вводе IP-адреса, маска и префикс должны заполняться автоматически, в зависимости от того,
